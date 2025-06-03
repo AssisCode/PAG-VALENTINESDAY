@@ -58,24 +58,35 @@
       max-width: 95%;
       margin: auto;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     h2 {
       font-size: 2em;
       color: #a30741;
+      margin-bottom: 10px;
     }
     p {
       font-size: 1.1em;
       color: #5c1d35;
+      max-width: 600px;
+      margin: 20px auto 0;
+      line-height: 1.5;
     }
     .photo {
       max-width: 280px;
       width: 100%;
       border-radius: 15px;
+      margin-top: 15px;
       margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
     .heart {
       font-size: 2em;
       animation: pulse 1.5s infinite;
+      margin: 8px 0;
+      color: #a30741;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -190,19 +201,19 @@
   <!-- Página 2 -->
   <div id="main" class="page" style="display:none;">
     <div class="container">
+      <h2>Feliz Dia dos Namorados</h2>
+      <div class="heart">❤️</div>
       <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
       
-      <div class="heart">❤️</div>
-      <h2>Feliz Dia dos Namorados</h2>
-      <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
+      <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei.</p>
       <div class="counter" id="contador"></div>
       <br>
       <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
 
       <!-- CLIP DO YOUTUBE NO FINAL -->
-      <div style="margin-top: 50px;">
+      <div style="margin-top: 50px; width: 100%; max-width: 560px;">
         <h3 style="color: #5c1d35;">Nossa música: Vício de Amor - Delacruz</h3>
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
           <iframe 
             src="https://www.youtube.com/embed/lm50i_r-pd8" 
             title="Vício de Amor - Delacruz"
@@ -290,17 +301,28 @@
       }
     }
 
-    // Contador de tempo juntos
+    // Contador com meses, dias e horas
     function atualizarContador() {
       const contador = document.getElementById('contador');
       const inicio = new Date('2021-06-12T00:00:00');
       const agora = new Date();
-      const diffMs = agora - inicio;
-      const dias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diffMs / (1000 * 60)) % 60);
-      const segundos = Math.floor((diffMs / 1000) % 60);
-      contador.textContent = `Juntos há ${dias} dias, ${horas}h ${minutos}m ${segundos}s`;
+
+      // Diferença total em milissegundos
+      let diffMs = agora - inicio;
+
+      // Converter para meses aproximados (considerando 30 dias por mês)
+      const msPorDia = 1000 * 60 * 60 * 24;
+      const msPorMes = msPorDia * 30;
+
+      const meses = Math.floor(diffMs / msPorMes);
+      diffMs -= meses * msPorMes;
+
+      const dias = Math.floor(diffMs / msPorDia);
+      diffMs -= dias * msPorDia;
+
+      const horas = Math.floor(diffMs / (1000 * 60 * 60));
+
+      contador.textContent = `Juntos há ${meses} meses, ${dias} dias e ${horas} horas`;
     }
     setInterval(atualizarContador, 1000);
     atualizarContador();
