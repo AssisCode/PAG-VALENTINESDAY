@@ -45,6 +45,8 @@
       border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
+      margin: 8px;
+      min-width: 80px;
     }
     button:hover {
       background-color: #ffe4ec;
@@ -199,8 +201,11 @@
 
   <!-- Página 1 -->
   <div id="home" class="page" style="display:flex;">
-    <h1>Oi, meu amor 💖</h1>
-    <button onclick="mostrarPagina('main')">Clique aqui</button>
+    <h1>Feliz Dia dos Namorados, Você me ama? </h1>
+    <div>
+      <button style="background-color:#17771a; color:white;" onclick="mostrarPagina('main')">Sim</button>
+      <button style="background-color:#91180f; color:white;" onclick="alert('Nunca mais faz nisso😡')">Não</button>
+    </div>
   </div>
 
   <!-- Página 2 -->
@@ -217,17 +222,22 @@
       </div>
       <div class="heart">❤️</div>
       <h2>Feliz Dia dos Namorados</h2>
-      <p>Seu amor transforma tudo em mim. Que nossa história continue sendo escrita com carinho, risos e momentos inesquecíveis.</p>
+      <p>Sou apaixonado em cada detalhe seu, desde a época da escola,
+         as vezes não acredito que consegui conquistar a menina que me conquistava
+          todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, 
+          ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
       <br>
-      <button onclick="mostrarPagina('future')">Nosso Futuro 💑</button>
+      <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
     </div>
   </div>
 
   <!-- Página 3 -->
   <div id="future" class="page">
-    <h2>Nosso Futuro</h2>
-    <p>Sonhando juntos, construindo uma vida cheia de amor e conquistas.</p>
+    <h2>NOSSO FUTURO BEM PRÓXIMO</h2>
+    <p>Você é o meu combustivel para me tornar um grande piloto de navio, 
+      tenho orgulho de você e sei que juntos vamos conquistar todos os nossos sonhos.
+    </p>
     <div class="future-photos">
       <img src="https://i.imgur.com/I84Rs3R.jpg" alt="Futuro 1" class="future-img" />
       <img src="https://i.imgur.com/8QqH1Pd.jpg" alt="Futuro 2" class="future-img" />
@@ -311,26 +321,33 @@
       });
     });
 
+    // Data do início do namoro
+    const dataInicio = new Date('2024-11-03T00:00:00');
+
     function atualizarContador() {
-      const inicio = new Date("2024-11-03T00:00:00");
       const agora = new Date();
+      let diff = agora - dataInicio; // diferença em ms
 
-      let anos = agora.getFullYear() - inicio.getFullYear();
-      let meses = agora.getMonth() - inicio.getMonth();
-      let dias = agora.getDate() - inicio.getDate();
-
-      if (dias < 0) {
-        meses -= 1;
-        const mesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0);
-        dias += mesAnterior.getDate();
-      }
-      if (meses < 0) {
-        anos -= 1;
-        meses += 12;
+      if (diff < 0) {
+        document.getElementById('contador').textContent = 'Ainda não começamos nosso namoro 💖';
+        return;
       }
 
-      document.getElementById('contador').textContent =
-        `Estamos juntos há: ${anos} anos, ${meses} meses e ${dias} dias 💖`;
+      // 1 mês = 30 dias em ms
+      const msPorHora = 1000 * 60 * 60;
+      const msPorDia = msPorHora * 24;
+      const msPorMes = msPorDia * 30;
+
+      const meses = Math.floor(diff / msPorMes);
+      diff -= meses * msPorMes;
+
+      const dias = Math.floor(diff / msPorDia);
+      diff -= dias * msPorDia;
+
+      const horas = Math.floor(diff / msPorHora);
+
+      document.getElementById('contador').textContent = 
+        `Estamos juntos há ${meses} mês${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''} 💕`;
     }
 
     let animador = setInterval(criarCoracao, 500);
