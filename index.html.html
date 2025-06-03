@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nosso Amor 💖</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      overflow-x: hidden;
+      background-color: #fff0f5;
+    }
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    #home {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #6d0030;
+      color: white;
+      padding: 40px 20px;
+    }
+    #home h1 {
+      font-size: 2.8em;
+      margin-bottom: 30px;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      text-shadow: 0 0 8px #ffb6c1;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 1em;
+      background-color: white;
+      color: #a30741;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #ffe4ec;
+    }
+    .container {
+      background: #ffcbd5;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 95%;
+      margin: auto;
+      padding: 20px;
+    }
+    h2 {
+      font-size: 2em;
+      color: #a30741;
+    }
+    p {
+      font-size: 1.1em;
+      color: #5c1d35;
+    }
+    .photo {
+      max-width: 280px;
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+    .heart {
+      font-size: 2em;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .heart-fall, .money-fall {
+      position: fixed;
+      top: -50px;
+      font-size: 20px;
+      z-index: 0;
+      animation: fall 6s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-50px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .music-player {
+      background: #121212;
+      color: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 320px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .music-player img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .music-player h3 {
+      margin: 5px 0;
+    }
+    .counter {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #5a0d29;
+      font-weight: bold;
+    }
+
+    .future-photos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 30px auto;
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    .future-img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+    .future-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Página 3 - novo estilo */
+    #future {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+      min-height: 100vh;
+      background: #2e7d32; /* verde bonito */
+      color: #d0f0c0; /* tom claro para contraste */
+      text-align: center;
+    }
+    #future h2 {
+      font-size: 2.8em;
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #a5d6a7; /* verde claro para título */
+      text-shadow: 0 0 6px #81c784;
+    }
+    #future p {
+      font-size: 1.3em;
+      max-width: 600px;
+      margin: 0 auto 35px auto;
+      line-height: 1.5;
+      font-weight: 500;
+      color: #c8e6c9; /* tom claro para o parágrafo */
+      text-shadow: 0 0 2px #a5d6a7;
+    }
+    #future button {
+      margin-top: 40px;
+      padding: 14px 36px;
+      font-size: 1.1em;
+      background-color: #1b5e20; /* verde mais escuro no botão */
+      color: #d0f0c0;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(27, 94, 32, 0.7);
+      transition: background-color 0.3s ease;
+    }
+    #future button:hover {
+      background-color: #388e3c;
+    }
+
+    @media (max-width: 500px) {
+      .future-photos {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .future-img {
+        max-width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Página 1 -->
+  <div id="home" class="page" style="display:flex;">
+    <h1>Oi, meu amor 💖</h1>
+    <button onclick="mostrarPagina('main')">Clique aqui</button>
+  </div>
+
+  <!-- Página 2 -->
+  <div id="main" class="page">
+    <div class="container">
+      <img src="https://i.imgur.com/C7nKgtY.jpg" class="photo" alt="nós dois"/>
+      <div class="music-player">
+        <img src="https://i.imgur.com/7hB3PEH.jpg" alt="Capa do álbum">
+        <h3>DelaCruz - Vício de Amor</h3>
+        <audio id="audioPlayer" autoplay loop>
+          <source src="https://dl.sndup.net/bwn9/VicioDeAmor_Delacruz.mp3" type="audio/mpeg">
+          Seu navegador não suporta áudio.
+        </audio>
+      </div>
+      <div class="heart">❤️</div>
+      <h2>Feliz Dia dos Namorados</h2>
+      <p>Seu amor transforma tudo em mim. Que nossa história continue sendo escrita com carinho, risos e momentos inesquecíveis.</p>
+      <div class="counter" id="contador"></div>
+      <br>
+      <button onclick="mostrarPagina('future')">Nosso Futuro 💑</button>
+    </div>
+  </div>
+
+  <!-- Página 3 -->
+  <div id="future" class="page">
+    <h2>Nosso Futuro</h2>
+    <p>Sonhando juntos, construindo uma vida cheia de amor e conquistas.</p>
+    <div class="future-photos">
+      <img src="https://i.imgur.com/I84Rs3R.jpg" alt="Futuro 1" class="future-img" />
+      <img src="https://i.imgur.com/8QqH1Pd.jpg" alt="Futuro 2" class="future-img" />
+    </div>
+    <br>
+    <button onclick="mostrarPagina('main')">Voltar</button>
+  </div>
+
+  <script>
+    function mostrarPagina(paginaId) {
+      const paginas = document.querySelectorAll('.page');
+      paginas.forEach(p => p.style.display = 'none');
+      document.getElementById(paginaId).style.display = 'flex';
+
+      if (paginaId === 'main') {
+        document.getElementById('audioPlayer').play();
+      }
+
+      clearInterval(animador);
+      if (paginaId === 'home' || paginaId === 'main') {
+        animador = setInterval(criarCoracao, 500);
+      } else if (paginaId === 'future') {
+        animador = setInterval(criarDinheiro, 500);
+      }
+    }
+
+    function criarCoracao() {
+      const heart = document.createElement('div');
+      heart.className = 'heart-fall';
+      heart.textContent = '💗';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    function criarDinheiro() {
+      const money = document.createElement('div');
+      money.className = 'money-fall';
+      money.textContent = '💸';
+      money.style.left = Math.random() * 100 + 'vw';
+      money.style.fontSize = (Math.random() * 14 + 14) + 'px';
+      document.body.appendChild(money);
+      setTimeout(() => money.remove(), 6000);
+    }
+
+    function criarExplosaoCoracoes(x, y) {
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.textContent = '❤️';
+        heart.style.position = 'fixed';
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        heart.style.fontSize = (Math.random() * 10 + 12) + 'px';
+        heart.style.opacity = 1;
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = 1000;
+        heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+        document.body.appendChild(heart);
+
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 150 + 50;
+        const translateX = Math.cos(angle) * distance;
+        const translateY = Math.sin(angle) * distance;
+
+        requestAnimationFrame(() => {
+          heart.style.transform = `translate(${translateX}px, ${translateY}px) scale(0)`;
+          heart.style.opacity = 0;
+        });
+
+        setTimeout(() => heart.remove(), 1000);
+      }
+    }
+
+    document.querySelectorAll('.future-img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        const rect = e.target.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        criarExplosaoCoracoes(x, y);
+      });
+    });
+
+    function atualizarContador() {
+      const inicio = new Date("2024-11-03T00:00:00");
+      const agora = new Date();
+
+      let anos = agora.getFullYear() - inicio.getFullYear();
+      let meses = agora.getMonth() - inicio.getMonth();
+      let dias = agora.getDate() - inicio.getDate();
+
+      if (dias < 0) {
+        meses -= 1;
+        const mesAnterior = new Date(agora.getFullYear(), agora.getMonth(), 0);
+        dias += mesAnterior.getDate();
+      }
+      if (meses < 0) {
+        anos -= 1;
+        meses += 12;
+      }
+
+      document.getElementById('contador').textContent =
+        `Estamos juntos há: ${anos} anos, ${meses} meses e ${dias} dias 💖`;
+    }
+
+    let animador = setInterval(criarCoracao, 500);
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+  </script>
+</body>
+</html>
