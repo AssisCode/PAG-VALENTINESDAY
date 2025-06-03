@@ -106,6 +106,7 @@
       width: 100%;
       border-radius: 10px;
       margin-bottom: 10px;
+      cursor: pointer;
     }
     .music-player h3 {
       margin: 5px 0;
@@ -116,7 +117,6 @@
       color: #5a0d29;
       font-weight: bold;
     }
-
     .future-photos {
       display: flex;
       justify-content: center;
@@ -139,7 +139,6 @@
       transform: scale(1.05);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
     }
-
     #future {
       display: none;
       flex-direction: column;
@@ -183,7 +182,6 @@
     #future button:hover {
       background-color: #388e3c;
     }
-
     @media (max-width: 500px) {
       .future-photos {
         flex-direction: column;
@@ -212,19 +210,18 @@
     <div class="container">
       <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
       <div class="music-player">
-        <img src="https://i.scdn.co/image/ab67616d0000b273dc41d9e59c993a3487221d64" alt="Capa do álbum">
+        <img 
+          id="musicCover" 
+          src="https://i.scdn.co/image/ab67616d0000b273dc41d9e59c993a3487221d64" 
+          alt="Capa do álbum" 
+          title="Clique para tocar ou pausar"
+        >
         <h3>DelaCruz - Vício de Amor</h3>
-        <audio id="audioPlayer" loop>
-          <source src="https://dl.sndup.net/bwn9/VicioDeAmor_Delacruz.mp3" type="audio/mpeg">
-          Seu navegador não suporta áudio.
-        </audio>
+        <div id="ytPlayerContainer" style="display:none;"></div>
       </div>
       <div class="heart">❤️</div>
       <h2>Feliz Dia dos Namorados</h2>
-      <p>Sou apaixonado em cada detalhe seu, desde a época da escola,
-         as vezes não acredito que consegui conquistar a menina que me conquistava
-          todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, 
-          ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
+      <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
       <br>
       <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
@@ -234,9 +231,7 @@
   <!-- Página 3 -->
   <div id="future" class="page" style="display:none;">
     <h2>NOSSO FUTURO BEM PRÓXIMO</h2>
-    <p>Você é o meu combustivel para me tornar um grande piloto de navio, 
-      tenho orgulho de você e sei que juntos vamos conquistar todos os nossos sonhos.
-    </p>
+    <p>Você é o meu combustível para me tornar um grande piloto de navio, tenho orgulho de você e sei que juntos vamos conquistar todos os nossos sonhos.</p>
     <div class="future-photos">
       <img src="https://i.imgur.com/I84Rs3R.jpeg" alt="Futuro 1" class="future-img" />
       <img src="https://i.imgur.com/FHJOC1Z.png" alt="Futuro 2" class="future-img" />
@@ -245,12 +240,16 @@
     <button onclick="mostrarPagina('main')">Voltar</button>
   </div>
 
+  <!-- Scripts -->
   <script>
+    let animador = setInterval(criarCoracao, 500);
+    let ytPlayer;
+    let isPlaying = false;
+
     function mostrarPagina(paginaId) {
       const paginas = document.querySelectorAll('.page');
       paginas.forEach(p => p.style.display = 'none');
       document.getElementById(paginaId).style.display = 'flex';
-
       clearInterval(animador);
       if (paginaId === 'home' || paginaId === 'main') {
         animador = setInterval(criarCoracao, 500);
@@ -261,12 +260,6 @@
 
     function irParaPaginaComAudio() {
       mostrarPagina('main');
-      const audio = document.getElementById('audioPlayer');
-      if (audio) {
-        audio.play().catch(err => {
-          console.log("Autoplay bloqueado:", err);
-        });
-      }
     }
 
     function criarCoracao() {
@@ -302,17 +295,14 @@
         heart.style.zIndex = 1000;
         heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
         document.body.appendChild(heart);
-
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 150 + 50;
         const translateX = Math.cos(angle) * distance;
         const translateY = Math.sin(angle) * distance;
-
         requestAnimationFrame(() => {
           heart.style.transform = `translate(${translateX}px, ${translateY}px) scale(0)`;
           heart.style.opacity = 0;
         });
-
         setTimeout(() => heart.remove(), 1000);
       }
     }
@@ -327,35 +317,58 @@
     });
 
     const dataInicio = new Date('2024-11-03T00:00:00');
-
     function atualizarContador() {
       const agora = new Date();
       let diff = agora - dataInicio;
-
       if (diff < 0) {
         document.getElementById('contador').textContent = 'Ainda não começamos nosso namoro 💖';
         return;
       }
-
       const msPorHora = 1000 * 60 * 60;
       const msPorDia = msPorHora * 24;
       const msPorMes = msPorDia * 30;
-
       const meses = Math.floor(diff / msPorMes);
       diff -= meses * msPorMes;
-
       const dias = Math.floor(diff / msPorDia);
       diff -= dias * msPorDia;
-
       const horas = Math.floor(diff / msPorHora);
-
       document.getElementById('contador').textContent = 
         `Estamos juntos há ${meses} mês${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''} 💕`;
     }
-
-    let animador = setInterval(criarCoracao, 500);
     setInterval(atualizarContador, 1000);
     atualizarContador();
+
+    // YouTube API
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('ytPlayerContainer', {
+        height: '0',
+        width: '0',
+        videoId: 'mUkwVwVK0gI', // ID do vídeo
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'mUkwVwVK0gI'
+        }
+      });
+    }
+
+    document.getElementById("musicCover").addEventListener("click", function() {
+      if (ytPlayer && ytPlayer.playVideo) {
+        if (!isPlaying) {
+          ytPlayer.playVideo();
+          isPlaying = true;
+        } else {
+          ytPlayer.pauseVideo();
+          isPlaying = false;
+        }
+      }
+    });
+
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   </script>
 </body>
 </html>
