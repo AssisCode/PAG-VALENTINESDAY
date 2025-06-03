@@ -58,35 +58,25 @@
       max-width: 95%;
       margin: auto;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
     h2 {
       font-size: 2em;
       color: #a30741;
-      margin-bottom: 10px;
     }
     p {
       font-size: 1.1em;
       color: #5c1d35;
-      max-width: 600px;
-      margin: 20px auto 0;
-      line-height: 1.5;
     }
     .photo {
       max-width: 280px;
       width: 100%;
       border-radius: 15px;
-      margin-top: 15px;
       margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
     .heart {
       font-size: 2em;
       animation: pulse 1.5s infinite;
-      margin: 8px 0;
-      color: #a30741;
+      margin: 10px 0;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -103,6 +93,21 @@
     @keyframes fall {
       0% { transform: translateY(-50px); opacity: 1; }
       100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .music-player {
+      background: #121212;
+      color: white;
+      border-radius: 15px;
+      padding: 10px;
+      margin: 30px auto 10px;
+      max-width: 320px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .music-player iframe {
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      border: none;
     }
     .counter {
       margin-top: 20px;
@@ -199,32 +204,23 @@
   </div>
 
   <!-- Página 2 -->
-  <div id="main" class="page" style="display:none;">
-    <div class="container">
+  <div id="main" class="page" style="display:none; flex-direction: column; align-items: center;">
+    <div class="container" style="max-width: 600px;">
       <h2>Feliz Dia dos Namorados</h2>
       <div class="heart">❤️</div>
       <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
-      
-      <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei.</p>
+      <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
-      <br>
-      <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
-
-      <!-- CLIP DO YOUTUBE NO FINAL -->
-      <div style="margin-top: 50px; width: 100%; max-width: 560px;">
-        <h3 style="color: #5c1d35;">Nossa música: Vício de Amor - Delacruz</h3>
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-          <iframe 
-            src="https://www.youtube.com/embed/lm50i_r-pd8" 
-            title="Vício de Amor - Delacruz"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen 
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-          </iframe>
-        </div>
+      <!-- Player do YouTube no final -->
+      <div class="music-player">
+        <iframe 
+          src="https://www.youtube.com/embed/lm50i_r-pd8?controls=1&loop=1&playlist=lm50i_r-pd8" 
+          title="YouTube video player" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
       </div>
-
+      <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
     </div>
   </div>
 
@@ -247,7 +243,9 @@
     function mostrarPagina(paginaId) {
       const paginas = document.querySelectorAll('.page');
       paginas.forEach(p => p.style.display = 'none');
-      document.getElementById(paginaId).style.display = 'flex';
+      const page = document.getElementById(paginaId);
+      page.style.display = 'flex';
+      
       clearInterval(animador);
       if (paginaId === 'home' || paginaId === 'main') {
         animador = setInterval(criarCoracao, 500);
@@ -293,36 +291,51 @@
         heart.style.zIndex = 1000;
         heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
         document.body.appendChild(heart);
-        setTimeout(() => {
-          heart.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 150 + 50;
+        const translateX = Math.cos(angle) * distance;
+        const translateY = Math.sin(angle) * distance;
+        requestAnimationFrame(() => {
+          heart.style.transform = `translate(${translateX}px, ${translateY}px) scale(0)`;
           heart.style.opacity = 0;
-        }, 10);
-        setTimeout(() => heart.remove(), 1010);
+        });
+        setTimeout(() => heart.remove(), 1000);
       }
     }
 
-    // Contador com meses, dias e horas
+    document.querySelectorAll('.future-img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        const rect = e.target.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        criarExplosaoCoracoes(x, y);
+      });
+    });
+
+    // Contador de tempo desde 03/11/2024
+    const dataInicio = new Date('2024-11-03T00:00:00');
     function atualizarContador() {
-      const contador = document.getElementById('contador');
-      const inicio = new Date('2021-06-12T00:00:00');
       const agora = new Date();
+      let diff = agora - dataInicio;
+      const contador = document.getElementById('contador');
 
-      // Diferença total em milissegundos
-      let diffMs = agora - inicio;
+      if (diff < 0) {
+        contador.textContent = 'Ainda não começamos nosso namoro 💖';
+        return;
+      }
 
-      // Converter para meses aproximados (considerando 30 dias por mês)
       const msPorDia = 1000 * 60 * 60 * 24;
       const msPorMes = msPorDia * 30;
 
-      const meses = Math.floor(diffMs / msPorMes);
-      diffMs -= meses * msPorMes;
+      const meses = Math.floor(diff / msPorMes);
+      diff -= meses * msPorMes;
 
-      const dias = Math.floor(diffMs / msPorDia);
-      diffMs -= dias * msPorDia;
+      const dias = Math.floor(diff / msPorDia);
+      diff -= dias * msPorDia;
 
-      const horas = Math.floor(diffMs / (1000 * 60 * 60));
+      const horas = Math.floor(diff / (1000 * 60 * 60));
 
-      contador.textContent = `Juntos há ${meses} meses, ${dias} dias e ${horas} horas`;
+      contador.textContent = `Juntos há ${meses} mês${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''}`;
     }
     setInterval(atualizarContador, 1000);
     atualizarContador();
