@@ -214,7 +214,7 @@
       <div class="music-player">
         <img src="https://i.scdn.co/image/ab67616d0000b273dc41d9e59c993a3487221d64" alt="Capa do álbum">
         <h3>DelaCruz - Vício de Amor</h3>
-        <audio id="audioPlayer" autoplay loop>
+        <audio id="audioPlayer" loop>
           <source src="https://dl.sndup.net/bwn9/VicioDeAmor_Delacruz.mp3" type="audio/mpeg">
           Seu navegador não suporta áudio.
         </audio>
@@ -251,15 +251,6 @@
       paginas.forEach(p => p.style.display = 'none');
       document.getElementById(paginaId).style.display = 'flex';
 
-      if (paginaId === 'main') {
-        const audio = document.getElementById('audioPlayer');
-        try {
-          audio.play();
-        } catch (e) {
-          console.log('Autoplay bloqueado:', e);
-        }
-      }
-
       clearInterval(animador);
       if (paginaId === 'home' || paginaId === 'main') {
         animador = setInterval(criarCoracao, 500);
@@ -271,10 +262,10 @@
     function irParaPaginaComAudio() {
       mostrarPagina('main');
       const audio = document.getElementById('audioPlayer');
-      try {
-        audio.play();
-      } catch (e) {
-        console.log('Autoplay bloqueado. Clique necessário.');
+      if (audio) {
+        audio.play().catch(err => {
+          console.log("Autoplay bloqueado:", err);
+        });
       }
     }
 
