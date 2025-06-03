@@ -11,7 +11,7 @@
       padding: 0;
       font-family: 'Arial', sans-serif;
       overflow-x: hidden;
-      background-color: #fff0f5;
+      background-color: #992a62;
     }
     .page {
       display: none;
@@ -39,17 +39,33 @@
     button {
       padding: 12px 24px;
       font-size: 1em;
-      background-color: white;
+      background-color: rgb(255, 255, 255);
       color: #a30741;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       transition: 0.3s;
-      margin: 8px;
+      margin: 8px; 
       min-width: 80px;
     }
     button:hover {
       background-color: #ffe4ec;
+    }
+    .botao-futuro {
+      background-color: #992a62;
+      color: #000;
+      border: 2px solid white;
+      border-radius: 14px;
+      padding: 14px 36px;
+      font-size: 1.1em;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(219, 52, 136, 0.7);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .botao-futuro:hover {
+      background-color: #d63384;
+      transform: scale(1.03);
     }
     .container {
       background: #ffcbd5;
@@ -196,7 +212,7 @@
 
   <!-- Página 1 -->
   <div id="home" class="page" style="display:flex;">
-    <h1>Feliz Dia dos Namorados, Você me ama? </h1>
+    <h1>Vi, Você me ama? </h1>
     <div>
       <button style="background-color:#17771a; color:white;" onclick="irParaPaginaComAudio()">Sim</button>
       <button style="background-color:#91180f; color:white;" onclick="alert('Nunca mais faz nisso😡')">Não</button>
@@ -207,11 +223,10 @@
   <div id="main" class="page" style="display:none; flex-direction: column; align-items: center;">
     <div class="container" style="max-width: 600px;">
       <h2>Feliz Dia dos Namorados</h2>
-      <div class="heart">❤️</div>
+      <div class="heart">❤️❤️❤️</div>
       <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
       <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
-      <!-- Player do YouTube no final -->
       <div class="music-player">
         <iframe 
           src="https://www.youtube.com/embed/lm50i_r-pd8?controls=1&loop=1&playlist=lm50i_r-pd8" 
@@ -220,14 +235,15 @@
           allowfullscreen>
         </iframe>
       </div>
-      <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
+      <button class="botao-futuro" onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
     </div>
   </div>
 
   <!-- Página 3 -->
   <div id="future" class="page" style="display:none;">
     <h2>NOSSO FUTURO BEM PRÓXIMO</h2>
-    <p>Você é o meu combustível para me tornar um grande piloto de navio, tenho orgulho de você e sei que juntos vamos conquistar todos os nossos sonhos.</p>
+    <p>Você é o meu combustível para me tornar um grande piloto de navio, 
+      tenho orgulho de você e sei que juntos vamos conquistar todos os nossos sonhos.</p>
     <div class="future-photos">
       <img src="https://i.imgur.com/I84Rs3R.jpeg" alt="Futuro 1" class="future-img" />
       <img src="https://i.imgur.com/FHJOC1Z.png" alt="Futuro 2" class="future-img" />
@@ -236,7 +252,6 @@
     <button onclick="mostrarPagina('main')">Voltar</button>
   </div>
 
-  <!-- Scripts -->
   <script>
     let animador = setInterval(criarCoracao, 500);
 
@@ -312,7 +327,6 @@
       });
     });
 
-    // Contador de tempo desde 03/11/2024
     const dataInicio = new Date('2024-11-03T00:00:00');
     function atualizarContador() {
       const agora = new Date();
