@@ -93,23 +93,6 @@
       0% { transform: translateY(-50px); opacity: 1; }
       100% { transform: translateY(100vh); opacity: 0; }
     }
-    .music-player {
-      background: #121212;
-      color: white;
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 320px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .music-player img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .music-player h3 {
-      margin: 5px 0;
-    }
     .counter {
       margin-top: 20px;
       font-size: 1.2em;
@@ -208,24 +191,29 @@
   <div id="main" class="page" style="display:none;">
     <div class="container">
       <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
-      <div class="music-player">
-        <img 
-          src="https://i.scdn.co/image/ab67616d0000b273dc41d9e59c993a3487221d64" 
-          alt="Capa do álbum"
-        >
-        <h3>DelaCruz - Vício de Amor</h3>
-        <button id="playBtn">Tocar Música 🎶</button>
-        <audio id="loveSong" loop>
-          <source src="https://www.youtube.com/watch?v=lm50i_r-pd8&ab_channel=Delacruz" type="audio/mpeg">
-          Seu navegador não suporta áudio.
-        </audio>
-      </div>
+      
       <div class="heart">❤️</div>
       <h2>Feliz Dia dos Namorados</h2>
       <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
       <br>
       <button onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
+
+      <!-- CLIP DO YOUTUBE NO FINAL -->
+      <div style="margin-top: 50px;">
+        <h3 style="color: #5c1d35;">Nossa música: Vício de Amor - Delacruz</h3>
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+          <iframe 
+            src="https://www.youtube.com/embed/lm50i_r-pd8" 
+            title="Vício de Amor - Delacruz"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+          </iframe>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -241,6 +229,7 @@
     <button onclick="mostrarPagina('main')">Voltar</button>
   </div>
 
+  <!-- Scripts -->
   <script>
     let animador = setInterval(criarCoracao, 500);
 
@@ -293,65 +282,28 @@
         heart.style.zIndex = 1000;
         heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
         document.body.appendChild(heart);
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 150 + 50;
-        const translateX = Math.cos(angle) * distance;
-        const translateY = Math.sin(angle) * distance;
-        requestAnimationFrame(() => {
-          heart.style.transform = `translate(${translateX}px, ${translateY}px) scale(0)`;
+        setTimeout(() => {
+          heart.style.transform = `translate(${(Math.random() - 0.5) * 200}px, ${(Math.random() - 0.5) * 200}px)`;
           heart.style.opacity = 0;
-        });
-        setTimeout(() => heart.remove(), 1000);
+        }, 10);
+        setTimeout(() => heart.remove(), 1010);
       }
     }
 
-    document.querySelectorAll('.future-img').forEach(img => {
-      img.addEventListener('click', (e) => {
-        const rect = e.target.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        criarExplosaoCoracoes(x, y);
-      });
-    });
-
-    const dataInicio = new Date('2024-11-03T00:00:00');
+    // Contador de tempo juntos
     function atualizarContador() {
+      const contador = document.getElementById('contador');
+      const inicio = new Date('2021-06-12T00:00:00');
       const agora = new Date();
-      let diff = agora - dataInicio;
-      if (diff < 0) {
-        document.getElementById('contador').textContent = 'Ainda não começamos nosso namoro 💖';
-        return;
-      }
-      const msPorHora = 1000 * 60 * 60;
-      const msPorDia = msPorHora * 24;
-      const msPorMes = msPorDia * 30;
-      const meses = Math.floor(diff / msPorMes);
-      diff -= meses * msPorMes;
-      const dias = Math.floor(diff / msPorDia);
-      diff -= dias * msPorDia;
-      const horas = Math.floor(diff / msPorHora);
-      document.getElementById('contador').textContent = 
-        `Estamos juntos há ${meses} mês${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''} 💕`;
+      const diffMs = agora - inicio;
+      const dias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diffMs / (1000 * 60)) % 60);
+      const segundos = Math.floor((diffMs / 1000) % 60);
+      contador.textContent = `Juntos há ${dias} dias, ${horas}h ${minutos}m ${segundos}s`;
     }
     setInterval(atualizarContador, 1000);
     atualizarContador();
-
-    // Música manual
-    let tocando = false;
-    const player = document.getElementById("loveSong");
-    const playBtn = document.getElementById("playBtn");
-
-    playBtn.addEventListener("click", () => {
-      if (!tocando) {
-        player.play();
-        tocando = true;
-        playBtn.textContent = "Pausar Música ⏸️";
-      } else {
-        player.pause();
-        tocando = false;
-        playBtn.textContent = "Tocar Música 🎶";
-      }
-    });
   </script>
 </body>
 </html>
