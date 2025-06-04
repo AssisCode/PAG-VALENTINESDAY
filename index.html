@@ -159,7 +159,7 @@
       align-items: center;
       padding: 40px 20px 60px;
       min-height: 100vh;
-      background: #6d0030;
+      background: #9C225D;
       color: #d0f0c0;
       text-align: center;
     }
@@ -168,24 +168,24 @@
       margin-bottom: 10px;
       font-weight: 700;
       letter-spacing: 1.2px;
-      color: #b81c55;
+      color: #ffffff;
       text-shadow: 6px 6px 6px #000000;
     }
     #future p {
-      font-size: 1.3em;
+      font-size: 1.2em;
       max-width: 600px;
-      margin: 0 auto 35px auto;
+      margin: 0 auto 40px auto;
       line-height: 1.5;
-      font-weight: 500;
-      color: #ffffff;
-      text-shadow: 2px 2px 2px #000000;
+      font-weight: 600;
+      color: #e4dfdf;
+      text-shadow: 6px 6px 6px #b10058;
     }
     #future button {
       margin-top: 40px;
       padding: 14px 36px;
       font-size: 1.1em;
-      background-color: #b81c55;
-      color: #ffffff;
+      background-color: #992a62;
+      color: #000000;
       border: none;
       border-radius: 14px;
       cursor: pointer;
@@ -194,8 +194,36 @@
       transition: background-color 0.3s ease;
     }
     #future button:hover {
-      background-color: #3b413b;
+      background-color: #ffffff;
     }
+
+    /* CARROSSEL */
+  .carousel-container {
+    width: 280px;
+    height: 400px; /* altura fixa para o carrossel */
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 1s ease-in-out;
+      will-change: transform;
+    }
+
+    .carousel-img {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 400px; /* mesma altura do container */
+      object-fit: cover; /* cobre o container sem distorcer */
+      user-select: none;
+      pointer-events: none;
+      border-radius: 15px;
+    }
+
     @media (max-width: 500px) {
       .future-photos {
         flex-direction: column;
@@ -204,6 +232,9 @@
       }
       .future-img {
         max-width: 90vw;
+      }
+      .carousel-container {
+        width: 90vw;
       }
     }
   </style>
@@ -224,7 +255,16 @@
     <div class="container" style="max-width: 600px;">
       <h2>Feliz Dia dos Namorados</h2>
       <div class="heart">❤️❤️❤️</div>
-      <img src="https://i.imgur.com/X0uI5PO.jpeg" class="photo" alt="nós dois"/>
+
+      <!-- Carrossel -->
+      <div class="carousel-container">
+        <div class="carousel-track">
+          <img src="https://i.imgur.com/X0uI5PO.jpeg" alt="Imagem 1" class="carousel-img" />
+          <img src="https://i.imgur.com/wCklRas.jpeg" alt="Imagem 2" class="carousel-img" />
+          <img src="https://i.imgur.com/UH9Wxaa.jpeg" alt="Imagem 3" class="carousel-img" />
+        </div>
+      </div>
+
       <p>Sou apaixonado em cada detalhe seu, desde a época da escola, as vezes não acredito que consegui conquistar a menina que me conquistava todos os dias pela manhã, mesmo sem ela saber. Obrigado por cada momento juntos, ainda teremos milhares de segundos/meses/horas/anos, pra sempre te amarei. </p>
       <div class="counter" id="contador"></div>
       <div class="music-player">
@@ -235,6 +275,7 @@
           allowfullscreen>
         </iframe>
       </div>
+      
       <button class="botao-futuro" onclick="mostrarPagina('future')">Clique para ver o NOSSO FUTURO 💑</button>
     </div>
   </div>
@@ -308,51 +349,117 @@
         document.body.appendChild(heart);
         const angle = Math.random() * 2 * Math.PI;
         const distance = Math.random() * 150 + 50;
-        const translateX = Math.cos(angle) * distance;
-        const translateY = Math.sin(angle) * distance;
-        requestAnimationFrame(() => {
-          heart.style.transform = `translate(${translateX}px, ${translateY}px) scale(0)`;
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+        setTimeout(() => {
+          heart.style.transform = `translate(${dx}px, ${dy}px) scale(0)`;
           heart.style.opacity = 0;
-        });
-        setTimeout(() => heart.remove(), 1000);
+        }, 10);
+        setTimeout(() => heart.remove(), 1100);
       }
     }
 
-    document.querySelectorAll('.future-img').forEach(img => {
-      img.addEventListener('click', (e) => {
-        const rect = e.target.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-        criarExplosaoCoracoes(x, y);
-      });
-    });
-
-    const dataInicio = new Date('2024-11-03T00:00:00');
-    function atualizarContador() {
+    // CONTADOR DE TEMPO: meses, dias e horas desde 03/11/2024
+    function calcularTempo() {
+      const inicio = new Date('2024-11-03T00:00:00');
       const agora = new Date();
-      let diff = agora - dataInicio;
-      const contador = document.getElementById('contador');
-
+      let diff = agora - inicio; // milissegundos
+      
       if (diff < 0) {
-        contador.textContent = 'Ainda não começamos nosso namoro 💖';
+        document.getElementById('contador').textContent = "Ainda não começou o nosso tempo juntos...";
         return;
       }
 
-      const msPorDia = 1000 * 60 * 60 * 24;
-      const msPorMes = msPorDia * 30;
+      const msPorHora = 1000 * 60 * 60;
+      const msPorDia = msPorHora * 24;
 
-      const meses = Math.floor(diff / msPorMes);
-      diff -= meses * msPorMes;
+      // Calcular meses aproximados (considerando meses como 30 dias)
+      const meses = Math.floor(diff / (msPorDia * 30));
+      diff -= meses * (msPorDia * 30);
 
       const dias = Math.floor(diff / msPorDia);
       diff -= dias * msPorDia;
 
-      const horas = Math.floor(diff / (1000 * 60 * 60));
+      const horas = Math.floor(diff / msPorHora);
 
-      contador.textContent = `Juntos há ${meses} mes${meses !== 1 ? 'es' : ''}, ${dias} dia${dias !== 1 ? 's' : ''} e ${horas} hora${horas !== 1 ? 's' : ''}`;
+      document.getElementById('contador').textContent = 
+        `Juntos há ${meses} meses, ${dias} dias e ${horas} horas!`;
     }
-    setInterval(atualizarContador, 1000);
-    atualizarContador();
+    calcularTempo();
+    setInterval(calcularTempo, 60 * 1000); // atualiza a cada minuto
+
+    // CARROSSEL COM SWIPE E AUTOMÁTICO
+    const track = document.querySelector('.carousel-track');
+    const images = Array.from(track.children);
+    let currentIndex = 0;
+
+    function updateCarousel() {
+      track.style.transform = `translateX(${-currentIndex * 100}%)`;
+    }
+
+    function slideCarousel() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateCarousel();
+    }
+
+    updateCarousel();
+    let intervalId = setInterval(slideCarousel, 3000);
+
+    // Controle do swipe touch e mouse
+    let startX = 0;
+    let isDragging = false;
+    const container = document.querySelector('.carousel-container');
+
+    container.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      clearInterval(intervalId);
+    });
+
+    container.addEventListener('touchend', e => {
+      if (!isDragging) return;
+      const endX = e.changedTouches[0].clientX;
+      const diffX = endX - startX;
+      if (diffX > 50) {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+      } else if (diffX < -50) {
+        currentIndex = (currentIndex + 1) % images.length;
+      }
+      updateCarousel();
+      isDragging = false;
+      intervalId = setInterval(slideCarousel, 3000);
+    });
+
+    container.addEventListener('mousedown', e => {
+      startX = e.clientX;
+      isDragging = true;
+      clearInterval(intervalId);
+    });
+
+    container.addEventListener('mouseup', e => {
+      if (!isDragging) return;
+      const endX = e.clientX;
+      const diffX = endX - startX;
+      if (diffX > 50) {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+      } else if (diffX < -50) {
+        currentIndex = (currentIndex + 1) % images.length;
+      }
+      updateCarousel();
+      isDragging = false;
+      intervalId = setInterval(slideCarousel, 3000);
+    });
+
+    // Evento para explodir corações ao clicar nas fotos do futuro
+    document.querySelectorAll('.future-img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        // pegar posição do clique na tela
+        const rect = e.target.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        criarExplosaoCoracoes(x, y);
+      });
+    });
   </script>
 </body>
 </html>
