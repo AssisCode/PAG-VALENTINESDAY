@@ -71,8 +71,9 @@
       background: #ffcbd5;
       border-radius: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 95%;
-      margin: auto;
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
       padding: 20px;
     }
     h2 {
@@ -198,14 +199,14 @@
     }
 
     /* CARROSSEL */
-  .carousel-container {
-    width: 280px;
-    height: 400px; /* altura fixa para o carrossel */
-    margin: 0 auto 20px;
-    overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    position: relative;
+    .carousel-container {
+      width: 280px;
+      height: 400px;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     .carousel-track {
@@ -217,8 +218,8 @@
     .carousel-img {
       flex: 0 0 100%;
       width: 100%;
-      height: 400px; /* mesma altura do container */
-      object-fit: cover; /* cobre o container sem distorcer */
+      height: 400px;
+      object-fit: cover;
       user-select: none;
       pointer-events: none;
       border-radius: 15px;
@@ -236,6 +237,16 @@
       .carousel-container {
         width: 90vw;
       }
+      .container {
+        width: 100%;
+        padding: 20px 10px;
+        margin: 0 auto;
+      }
+      #main {
+        padding: 20px 10px 40px;
+        justify-content: center;
+        align-items: center;
+      }
     }
   </style>
 </head>
@@ -252,7 +263,7 @@
 
   <!-- Página 2 -->
   <div id="main" class="page" style="display:none; flex-direction: column; align-items: center;">
-    <div class="container" style="max-width: 600px;">
+    <div class="container">
       <h2>Feliz Dia dos Namorados</h2>
       <div class="heart">❤️❤️❤️</div>
 
@@ -359,11 +370,10 @@
       }
     }
 
-    // CONTADOR DE TEMPO: meses, dias e horas desde 03/11/2024
     function calcularTempo() {
       const inicio = new Date('2024-11-03T00:00:00');
       const agora = new Date();
-      let diff = agora - inicio; // milissegundos
+      let diff = agora - inicio;
       
       if (diff < 0) {
         document.getElementById('contador').textContent = "Ainda não começou o nosso tempo juntos...";
@@ -373,7 +383,6 @@
       const msPorHora = 1000 * 60 * 60;
       const msPorDia = msPorHora * 24;
 
-      // Calcular meses aproximados (considerando meses como 30 dias)
       const meses = Math.floor(diff / (msPorDia * 30));
       diff -= meses * (msPorDia * 30);
 
@@ -386,9 +395,8 @@
         `Juntos há ${meses} meses, ${dias} dias e ${horas} horas!`;
     }
     calcularTempo();
-    setInterval(calcularTempo, 60 * 1000); // atualiza a cada minuto
+    setInterval(calcularTempo, 60 * 1000);
 
-    // CARROSSEL COM SWIPE E AUTOMÁTICO
     const track = document.querySelector('.carousel-track');
     const images = Array.from(track.children);
     let currentIndex = 0;
@@ -405,7 +413,6 @@
     updateCarousel();
     let intervalId = setInterval(slideCarousel, 3000);
 
-    // Controle do swipe touch e mouse
     let startX = 0;
     let isDragging = false;
     const container = document.querySelector('.carousel-container');
@@ -450,11 +457,8 @@
       intervalId = setInterval(slideCarousel, 3000);
     });
 
-    // Evento para explodir corações ao clicar nas fotos do futuro
     document.querySelectorAll('.future-img').forEach(img => {
       img.addEventListener('click', (e) => {
-        // pegar posição do clique na tela
-        const rect = e.target.getBoundingClientRect();
         const x = e.clientX;
         const y = e.clientY;
         criarExplosaoCoracoes(x, y);
